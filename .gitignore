@@ -1,0 +1,22 @@
+# Sensible Daten
+credentials.h
+
+# Arduino Build-Verzeichnisse
+build/
+*.bin
+*.elf
+*.map
+
+# IDE-Dateien
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+# Backup-Dateien
+*.bak
+*~

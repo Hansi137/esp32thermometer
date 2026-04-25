@@ -117,15 +117,57 @@ const char* password = "DEIN_WLAN_PASSWORT";
 
 ### 4. Kompilieren & Flashen
 
-```bash
-# Mit PlatformIO CLI
-pio run -t upload
+#### Option A: Arduino CLI (Empfohlen)
 
-# Serial Monitor öffnen
-pio device monitor
+**Installation Arduino CLI**:
+```powershell
+# Windows (mit Chocolatey)
+choco install arduino-cli
+
+# Oder manuell von: https://arduino.github.io/arduino-cli/latest/installation/
 ```
 
-Oder in VS Code mit PlatformIO-Extension: **Upload-Button** (→) klicken.
+**ESP32 Support installieren**:
+```bash
+# ESP32 Board Support hinzufügen
+arduino-cli config init
+arduino-cli config add board_manager.additional_urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+arduino-cli core update-index
+arduino-cli core install esp32:esp32
+
+# Bibliotheken installieren
+arduino-cli lib install "OneWire"
+arduino-cli lib install "DallasTemperature"
+arduino-cli lib install "TFT_eSPI"
+```
+
+**TFT_eSPI Konfiguration**:
+Die TFT_eSPI Bibliothek muss für das T-Display S3 konfiguriert werden. Die Konfiguration ist bereits im Code eingebaut (siehe `.ino` Datei), alternativ kann `User_Setup.h` in der Bibliothek angepasst werden.
+
+**Kompilieren & Flashen**:
+```bash
+# Board auswählen (FQBN für ESP32-S3)
+arduino-cli compile --fqbn esp32:esp32:esp32s3 ESP32_Thermometer/
+
+# Auf Board flashen (COM-Port anpassen!)
+arduino-cli upload -p COM5 --fqbn esp32:esp32:esp32s3 ESP32_Thermometer/
+
+# Serial Monitor (115200 Baud)
+arduino-cli monitor -p COM5 -c baudrate=115200
+```
+
+#### Option B: PowerShell-Skript (Windows)
+
+```powershell
+# Verwendet build_and_flash.ps1
+.\build_and_flash.ps1
+```
+
+#### Option C: Arduino IDE
+
+1. Sketch → Upload (Strg+U)
+2. Werkzeuge → Board → ESP32 Arduino → "ESP32S3 Dev Module"
+3. USB CDC On Boot: **Enabled**
 
 ## Features
 
